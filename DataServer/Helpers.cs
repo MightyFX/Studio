@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,20 +9,24 @@ namespace MightyFX.Data
     {
         public static DataField AddField(this DataTable table, ITag tag)
         {
+            if (tag == null)
+            {
+                throw new ArgumentNullException("tag");
+            }
+
             var field = new DataField(table, tag);
             table.Fields.Add(field);
             return field;
         }
 
-        public static async Task<DataField> AddField(this DataTable table, DataServer server, string tag)
+        public static async Task<DataField> AddFieldAsync(this DataTable table, DataServer server, TagIdentifier tagId)
         {
-            return table.AddField(await server.ResolveTag(tag));
+            return table.AddField(await server.ResolveTagAsync(tagId));
         }
 
-        public static Task<ITag> ResolveTag(this DataServer server, string tag)
+        public static Task<ITag> ResolveTagAsync(this DataServer server, TagIdentifier tagId)
         {
-            string[] parts = tag.Split(':');
-            return server.FindSource(parts[0]).FindTag(parts[1]);
+            return server.FindSource(tagId.Source).FindTagAsync(tagId.Name);
         }
 
         public static IDataSource FindSource(this DataServer server, string name)
