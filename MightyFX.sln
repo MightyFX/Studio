@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio", "Studio\Studio.csproj", "{69D10F37-36FB-48D7-B9A6-856CF98B7EC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MightyFX.Studio", "Studio\MightyFX.Studio.csproj", "{69D10F37-36FB-48D7-B9A6-856CF98B7EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio.Tests", "Studio.Tests\Studio.Tests.csproj", "{5B41F001-7326-489D-9A21-885FACDA11A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MightyFX.Studio.Tests", "Studio.Tests\MightyFX.Studio.Tests.csproj", "{5B41F001-7326-489D-9A21-885FACDA11A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{53384F9C-76D3-45AC-AD7B-F863B5C8FF61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MightyFX.Data", "DataServer\MightyFX.Data.csproj", "{0FF48A6E-059C-41F8-BF94-3369D284F299}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MightyFX.Common", "Common\MightyFX.Common.csproj", "{A4E88E99-FF8E-494D-90AE-A2E721D960AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MightyFX.Data.Tests", "MightyFX.Data.Tests\MightyFX.Data.Tests.csproj", "{761A2A0F-9812-473E-A9FF-52399845B830}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +29,24 @@ Global
 		{5B41F001-7326-489D-9A21-885FACDA11A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B41F001-7326-489D-9A21-885FACDA11A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B41F001-7326-489D-9A21-885FACDA11A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FF48A6E-059C-41F8-BF94-3369D284F299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF48A6E-059C-41F8-BF94-3369D284F299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF48A6E-059C-41F8-BF94-3369D284F299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF48A6E-059C-41F8-BF94-3369D284F299}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4E88E99-FF8E-494D-90AE-A2E721D960AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4E88E99-FF8E-494D-90AE-A2E721D960AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4E88E99-FF8E-494D-90AE-A2E721D960AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4E88E99-FF8E-494D-90AE-A2E721D960AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{761A2A0F-9812-473E-A9FF-52399845B830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761A2A0F-9812-473E-A9FF-52399845B830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761A2A0F-9812-473E-A9FF-52399845B830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761A2A0F-9812-473E-A9FF-52399845B830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B41F001-7326-489D-9A21-885FACDA11A6} = {53384F9C-76D3-45AC-AD7B-F863B5C8FF61}
+		{761A2A0F-9812-473E-A9FF-52399845B830} = {53384F9C-76D3-45AC-AD7B-F863B5C8FF61}
 	EndGlobalSection
 EndGlobal

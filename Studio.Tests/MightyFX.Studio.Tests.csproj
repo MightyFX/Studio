@@ -92,9 +92,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Studio\Studio.csproj">
+    <ProjectReference Include="..\Studio\MightyFX.Studio.csproj">
       <Project>{69D10F37-36FB-48D7-B9A6-856CF98B7EC0}</Project>
-      <Name>Studio</Name>
+      <Name>MightyFX.Studio</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
