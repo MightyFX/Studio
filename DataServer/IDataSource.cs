@@ -59,10 +59,21 @@ namespace MightyFX.Data
     }
 
     /// <summary>
-    /// An implementation of <see cref="IDataSource"/> for sources that have a constant set of tags that are already known.
+    /// An implementation of <see cref="IDataSource"/> for sources that have a constant set of tags that are known upon construction.
     /// </summary>
     public abstract class SimpleDataSourceBase : IDataSource
     {
+        /// <summary>
+        /// Constructs a new instance of <see cref="SimpleDataSourceBase"/>.
+        /// </summary>
+        /// <param name="name">The name of the data source.</param>
+        protected SimpleDataSourceBase(string name)
+        {
+            Name = name;
+            Description = string.Empty;
+            _tags = new Dictionary<TagIdentifier, ITag>();
+        }
+
         #region Implementation of IDataSource
 
         /// <inheritdoc />
@@ -108,17 +119,6 @@ namespace MightyFX.Data
         /// The dictionary of tags.
         /// </summary>
         private readonly IDictionary<TagIdentifier, ITag> _tags;
-
-        /// <summary>
-        /// Constructs a new instance of <see cref="SimpleDataSourceBase"/>.
-        /// </summary>
-        /// <param name="name">The name of the data source.</param>
-        protected SimpleDataSourceBase(string name)
-        {
-            Name = name;
-            Description = string.Empty;
-            _tags = new Dictionary<TagIdentifier, ITag>();
-        }
 
         /// <summary>
         /// Adds a <see cref="SimpleTag"/> to this data source with the given name (using the name of the data source) and returns the tag for further modification.

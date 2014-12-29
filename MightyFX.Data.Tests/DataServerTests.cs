@@ -41,11 +41,11 @@ namespace MightyFX.Data.Tests
             await table.AddFieldAsync(_server, "1:banana");
             await table.AddFieldAsync(_server, "2:cheers");
 
-            await _server.Query(TestUser.DummyUser, table);
+            await Task.WhenAll(_server.QueryAsync(TestUser.DummyUser, table));
             DatedSample[] samples1 = table.Fields.SelectMany(f => f.DatedSamples).ToArray();
             Assert.AreEqual(2, samples1.Length);
 
-            await _server.Query(TestUser.DummyUser, table);
+            await Task.WhenAll(_server.QueryAsync(TestUser.DummyUser, table));
             DatedSample[] samples2 = table.Fields.SelectMany(f => f.DatedSamples).ToArray();
             Assert.AreEqual(2, samples2.Length);
 
@@ -84,7 +84,7 @@ namespace MightyFX.Data.Tests
                     field.RawSamples = new[] { this };
                 }
 
-                await Task.Delay(100);
+                await Task.Delay(25);
             }
 
             #endregion

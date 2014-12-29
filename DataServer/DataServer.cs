@@ -83,13 +83,19 @@ namespace MightyFX.Data
         /// </summary>
         /// <param name="user">The user that is requesting the data.</param>
         /// <param name="table">The table to fill.</param>
-        public async Task Query(IUser user, DataTable table)
+        public Task<DataField[]>[] QueryAsync(IUser user, DataTable table)
         {
             table.ClearSamples();
 
-            var fieldsBySource = table.Fields.GroupBy(f => _sources[f.Tag.Identifier.Source]);
-            var queryTasks = fieldsBySource.Select(fs => fs.Key.QueryFieldsAsync(user, fs.ToArray()));
-            await Task.WhenAll(queryTasks);
+            IEnumerable<Task<DataField[]>> queryTasks =
+                table.Fields.GroupBy(f => _sources[f.Tag.Identifier.Source]).Select(async fs =>
+                    {
+                        DataField[] fields = fs.ToArray();
+                        await fs.Key.QueryFieldsAsync(user, fields);
+                        return fields;
+                    });
+
+            return queryTasks.ToArray();
         }
 
         #region Overrides of Object
