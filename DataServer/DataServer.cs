@@ -1,29 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Globalization;
 using System.Linq;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using MightyFX.Users;
 
 namespace MightyFX.Data
 {
-    /// <summary>
-    /// Provides data sources for the data server. Export this interface to add data sources.
-    /// </summary>
-    public interface IDataSourceProvider
-    {
-        /// <summary>
-        /// Gets the sources that are provided. Not yet thread-safe to change while a query is happening.
-        /// </summary>
-        /// <remarks>
-        /// Source names must be unique for a data server. We don't currently check this.
-        /// </remarks>
-        IEnumerable<IDataSource> Sources
-        {
-            get;
-        }
-    }
-
     /// <summary>
     /// An MEF singleton that provides querying abilities for the data sources exported by <see cref="IDataSourceProvider"/>.
     /// </summary>
@@ -36,42 +21,87 @@ namespace MightyFX.Data
         /// </summary>
         /// <param name="providers">The data source providers we will serve.</param>
         [ImportingConstructor]
-        public DataServer(IEnumerable<IDataSourceProvider> providers)
+        public DataServer(params IDataSourceProvider[] providers)
         {
+            _sources = new Dictionary<string, IDataSource>(StringComparer.InvariantCultureIgnoreCase);
+
             Providers = providers;
+            Providers.ForEach(p => p.ConfigureDataServer(this));
         }
 
         /// <summary>
         /// Gets the data source providers we are serving.
         /// </summary>
-        public IEnumerable<IDataSourceProvider> Providers
+        public IReadOnlyList<IDataSourceProvider> Providers
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Gets the list of sources we support for querying across all providers.
+        /// Backing for <see cref="Sources"/>.
         /// </summary>
-        public IEnumerable<IDataSource> Sources
+        private readonly Dictionary<string, IDataSource> _sources;
+
+        /// <summary>
+        /// Gets the sources we support for querying across all providers.
+        /// </summary>
+        public IReadOnlyDictionary<string, IDataSource> Sources
         {
             get
             {
-                return Providers.SelectMany(p => p.Sources);
+                return new ReadOnlyDictionary<string, IDataSource>(_sources);
             }
+        }
+
+        /// <summary>
+        /// Adds a data source to the server.
+        /// </summary>
+        /// <param name="source">The source to add. Must have a unique name.</param>
+        /// <remarks>
+        /// Not currently thread-safe.
+        /// </remarks>
+        public void AddSource(IDataSource source)
+        {
+            _sources.Add(source.Name, source);
+        }
+
+        /// <summary>
+        /// Removes a data source from the server.
+        /// </summary>
+        /// <param name="source">The source to remove.</param>
+        /// <remarks>
+        /// Not currently thread-safe.
+        /// </remarks>
+        public void RemoveSource(IDataSource source)
+        {
+            _sources.Remove(source.Name);
         }
 
         /// <summary>
         /// Queries and fills the given table.
         /// </summary>
         /// <param name="user">The user that is requesting the data.</param>
-        /// <param name="result">The table to fill.</param>
-        public async void Query(IUser user, DataTable result)
+        /// <param name="table">The table to fill.</param>
+        public async Task Query(IUser user, DataTable table)
         {
-            result.ClearSamples();
+            table.ClearSamples();
 
-            var fieldsBySource = result.Fields.GroupBy(f => this.FindSource(f.Tag.Identifier.Source)).ToList();
-            await Task.WhenAll(fieldsBySource.Select(fs => fs.Key.QueryFieldsAsync(user, fs.ToArray())));
+            var fieldsBySource = table.Fields.GroupBy(f => _sources[f.Tag.Identifier.Source]);
+            var queryTasks = fieldsBySource.Select(fs => fs.Key.QueryFieldsAsync(user, fs.ToArray()));
+            await Task.WhenAll(queryTasks);
         }
+
+        #region Overrides of Object
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture,
+                "Providers = {0}, Sources = [{1}]",
+                Providers.Count, Sources.Keys.ToCsv());
+        }
+
+        #endregion
     }
 }

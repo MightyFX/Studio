@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MightyFX.TestUtilities;
 
 namespace MightyFX.Data.Tests
 {
     [TestClass]
-    public class DataTableTests
+    public class DataTableTests : AutoTest
     {
         [TestMethod]
         public void DataTable_AddField()

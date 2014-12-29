@@ -1,27 +1,6 @@
 namespace MightyFX.Data
 {
     /// <summary>
-    /// The type of values returned by a tag.
-    /// </summary>
-    public enum TagType
-    {
-        /// <summary>
-        /// Returns a true/false value. Coded as a numeric 0 or 1.
-        /// </summary>
-        Boolean,
-
-        /// <summary>
-        /// Returns a floating-point value (double).
-        /// </summary>
-        Numeric,
-
-        /// <summary>
-        /// Returns a string value.
-        /// </summary>
-        String
-    }
-
-    /// <summary>
     /// A tag in a <see cref="IDataSource"/> that represents a series of values.
     /// </summary>
     public interface ITag
@@ -76,9 +55,9 @@ namespace MightyFX.Data
     }
 
     /// <summary>
-    /// A simple implementation for <see cref="ITag"/> for general use.
+    /// An implementation of <see cref="ITag"/> for basic general-use.
     /// </summary>
-    public class SimpleTag : ITag
+    public sealed class SimpleTag : ITag
     {
         #region Implementation of ITag
 
@@ -86,7 +65,7 @@ namespace MightyFX.Data
         public TagIdentifier Identifier
         {
             get;
-            set;
+            private set;
         }
 
         /// <inheritdoc />
@@ -133,6 +112,21 @@ namespace MightyFX.Data
         public SimpleTag(TagIdentifier identifier)
         {
             Identifier = identifier;
+            Description = string.Empty;
+            Units = string.Empty;
+            Type = TagType.Numeric;
+            MinimumValue = double.MinValue;
+            MaximumValue = double.MaxValue;
         }
+
+        #region Overrides of Object
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Identifier.ToString();
+        }
+
+        #endregion
     }
 }

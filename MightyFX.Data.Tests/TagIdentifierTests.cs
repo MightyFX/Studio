@@ -5,7 +5,7 @@ using MightyFX.TestUtilities;
 namespace MightyFX.Data.Tests
 {
     [TestClass]
-    public class TagIdentifierTests
+    public class TagIdentifierTests : AutoTest
     {
         [TestMethod]
         public void TagIdentifier_FromString_Valid()

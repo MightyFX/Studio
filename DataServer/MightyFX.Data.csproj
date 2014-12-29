@@ -40,13 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataField.cs" />
     <Compile Include="DataServer.cs" />
     <Compile Include="DataTable.cs" />
+    <Compile Include="DatedSample.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IDataSource.cs" />
+    <Compile Include="IDataSourceProvider.cs" />
     <Compile Include="ITag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryType.cs" />
     <Compile Include="TagIdentifier.cs" />
+    <Compile Include="TagType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\MightyFX.Common.csproj">
