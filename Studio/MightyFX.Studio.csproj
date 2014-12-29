@@ -189,6 +189,23 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\MightyFX.Common.csproj">
+      <Project>{A4E88E99-FF8E-494D-90AE-A2E721D960AE}</Project>
+      <Name>MightyFX.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataServer\MightyFX.Data.csproj">
+      <Project>{0FF48A6E-059C-41F8-BF94-3369D284F299}</Project>
+      <Name>MightyFX.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MightyFX.Data.LegacySupport\MightyFX.Data.LegacySupport.csproj">
+      <Project>{26525919-4D39-48A5-A11E-830B94D4E6E9}</Project>
+      <Name>MightyFX.Data.LegacySupport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
