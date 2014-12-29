@@ -81,7 +81,7 @@ namespace MightyFX.Data
         /// <summary>
         /// Queries and fills the given table.
         /// </summary>
-        /// <param name="user">The user that is requesting the data.</param>
+        /// <param name="user">The user that is requesting the data. If null, it is the anonymous user.</param>
         /// <param name="table">The table to fill.</param>
         public Task<DataField[]>[] QueryAsync(IUser user, DataTable table)
         {

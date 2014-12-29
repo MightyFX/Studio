@@ -10,7 +10,12 @@ namespace MightyFX.Data
         /// <summary>
         /// The separator between the source and name of the tag.
         /// </summary>
-        public const char Separator = ':';
+        public const char Separator = '.';
+
+        /// <summary>
+        /// The separator between the source and name of the tag.
+        /// </summary>
+        private static readonly char[] _separatorArray = { Separator };
 
         /// <summary>
         /// The name of the <see cref="IDataSource"/> to find this tag.
@@ -23,13 +28,17 @@ namespace MightyFX.Data
         public readonly string Name;
 
         /// <summary>
+        /// Cached hashcode.
+        /// </summary>
+        private readonly int _hashCode;
+
+        /// <summary>
         /// Copies an existing tag identifier.
         /// </summary>
         /// <param name="copyFrom">The tag identifier to copy.</param>
         public TagIdentifier(TagIdentifier copyFrom)
+            : this(copyFrom.Source, copyFrom.Name)
         {
-            Source = copyFrom.Source;
-            Name = copyFrom.Name;
         }
 
         /// <summary>
@@ -41,9 +50,10 @@ namespace MightyFX.Data
         {
             Source = source;
             Name = name;
+            _hashCode = (Source != null ? Source.ToLowerInvariant().GetHashCode() : 0) * 397 ^ (Name != null ? Name.ToLowerInvariant().GetHashCode() : 0);
         }
 
-        #region Equality
+        #region Equality / Comparison
 
         /// <inheritdoc />
         public bool Equals(TagIdentifier other)
@@ -61,14 +71,23 @@ namespace MightyFX.Data
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Source != null ? Source.GetHashCode() : 0) * 397 ^ (Name != null ? Name.GetHashCode() : 0);
-            }
+            return _hashCode;
         }
 
-        #endregion
+        /////// <inheritdoc />
+        ////public int CompareTo(TagIdentifier other)
+        ////{
+        ////    int value = StringComparer.InvariantCultureIgnoreCase.Compare(Source, other.Source);
+        ////    if (value == 0)
+        ////    {
+        ////        value = StringComparer.InvariantCultureIgnoreCase.Compare(Name, other.Name);
+        ////    }
 
+        ////    return value;
+        ////}
+
+        #endregion
+        
         /// <inheritdoc />
         public override string ToString()
         {
@@ -83,10 +102,10 @@ namespace MightyFX.Data
         /// <exception cref="ArgumentException">Thrown if the string is not in the format of a tag.</exception>
         public static implicit operator TagIdentifier(string tag)
         {
-            string[] parts = tag.Split(Separator);
+            string[] parts = tag.Split(_separatorArray, 2);
             if (parts.Length != 2)
             {
-                throw new ArgumentException("Invalid tag format.");
+                throw new ArgumentException("Invalid tag format: " + tag);
             }
 
             return new TagIdentifier(parts[0], parts[1]);

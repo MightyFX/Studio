@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,14 +47,14 @@ namespace MightyFX.Data
         /// <summary>
         /// Returns the access roles for the given user for this data source.
         /// </summary>
-        /// <param name="user">The user to check.</param>
+        /// <param name="user">The user to check. If null, it is the anonymous user.</param>
         /// <returns>The roles this user has in this data source.</returns>
         Task<AccessRoles> CheckAccessAsync(IUser user);
 
         /// <summary>
         /// Queries and fills the given table.
         /// </summary>
-        /// <param name="user">The user that is requesting the data.</param>
+        /// <param name="user">The user that is requesting the data. If null, it is the anonymous user.</param>
         /// <param name="fields">The fields to fill.</param>
         /// <returns>A task representing when the operation is complete.</returns>
         Task QueryFieldsAsync(IUser user, DataField[] fields);

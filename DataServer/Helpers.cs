@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MightyFX.Data
@@ -46,7 +48,28 @@ namespace MightyFX.Data
         /// <returns>The tag or null if it was not found.</returns>
         public static Task<ITag> ResolveTagAsync(this DataServer server, TagIdentifier tagId)
         {
-            return server.Sources[tagId.Source].ResolveTagAsync(tagId.Name);
+            return server.Sources[tagId.Source].ResolveTagAsync(tagId);
+        }
+
+        /// <summary>
+        /// Sets the field's <see cref="DataField.RawSamples"/> and sets its <see cref="DataField.DatedSamples"/> as a function of the table's start time, sample interval, and raw samples.
+        /// </summary>
+        /// <param name="field">The field to which to set the samples.</param>
+        /// <param name="samples">The raw samples to set.</param>
+        public static void SetRawSamples(this DataField field, IList samples)
+        {
+            field.RawSamples = samples;
+            field.DatedSamples = DatedSamplesFromRawSamples(field);
+        }
+
+        private static IEnumerable<DatedSample> DatedSamplesFromRawSamples(DataField field)
+        {
+            DateTime time = field.Table.StartTime;
+            foreach (var sample in field.RawSamples)
+            {
+                yield return new DatedSample(time, sample);
+                time += field.Table.SampleInterval;
+            }
         }
     }
 }

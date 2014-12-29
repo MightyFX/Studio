@@ -6,6 +6,7 @@ namespace MightyFX.Data
     public enum QueryType
     {
         Default,
+        LatestSample,
         ////InterpolatedOverInterval,
         ////SampleClosestToInterval,
         ////AverageOverInterval,
