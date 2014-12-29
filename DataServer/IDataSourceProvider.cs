@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using MightyFX.Users;
 
 namespace MightyFX.Data
 {
@@ -19,7 +21,7 @@ namespace MightyFX.Data
     /// <summary>
     /// An implementation of <see cref="IDataSourceProvider"/> for basic general-use.
     /// </summary>
-    public sealed class SimpleDataSourceProvider : IDataSourceProvider
+    public class SimpleDataSourceProvider : IDataSourceProvider
     {
         /// <summary>
         /// Creates an instance of <see cref="IDataSourceProvider"/>.
@@ -27,16 +29,32 @@ namespace MightyFX.Data
         /// <param name="sources">The sources that will be added by this provider.</param>
         public SimpleDataSourceProvider(params IDataSource[] sources)
         {
-            Sources = sources;
+            _sources = new List<IDataSource>(sources);
         }
+
+        /// <summary>
+        /// Backing for <see cref="Sources"/>.
+        /// </summary>
+        private readonly IList<IDataSource> _sources;
 
         /// <summary>
         /// Gets the data sources that are registered by this provider.
         /// </summary>
-        public IReadOnlyList<IDataSource> Sources
+        public IReadOnlyCollection<IDataSource> Sources
         {
-            get;
-            private set;
+            get
+            {
+                return new ReadOnlyCollection<IDataSource>(_sources);
+            }
+        }
+
+        /// <summary>
+        /// Adds a data source during construction. This is not valid to be called at any other time.
+        /// </summary>
+        /// <param name="source">The source to add.</param>
+        protected void AddSource(IDataSource source)
+        {
+            _sources.Add(source);
         }
 
         #region Implementation of IDataSourceProvider

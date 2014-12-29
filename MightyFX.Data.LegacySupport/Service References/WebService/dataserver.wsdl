@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tcwb01/dataserver/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tcwb01/dataserver/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Performs various data retrieval operations.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tcwb01/dataserver/">
+      <s:element name="login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="servername" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="windowslogin" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="query">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="servername" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="querytype" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="tags" type="tns:ArrayOfString" />
+            <s:element minOccurs="1" maxOccurs="1" name="start" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="end" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="secondinterval" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="queryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="queryResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_tags">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="servername" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_tagsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_tagsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getLog">
+        <s:complexType />
+      </s:element>
+      <s:element name="getLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getLogResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="clearLog">
+        <s:complexType />
+      </s:element>
+      <s:element name="clearLogResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="loginSoapIn">
+    <wsdl:part name="parameters" element="tns:login" />
+  </wsdl:message>
+  <wsdl:message name="loginSoapOut">
+    <wsdl:part name="parameters" element="tns:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="querySoapIn">
+    <wsdl:part name="parameters" element="tns:query" />
+  </wsdl:message>
+  <wsdl:message name="querySoapOut">
+    <wsdl:part name="parameters" element="tns:queryResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_tagsSoapIn">
+    <wsdl:part name="parameters" element="tns:get_tags" />
+  </wsdl:message>
+  <wsdl:message name="get_tagsSoapOut">
+    <wsdl:part name="parameters" element="tns:get_tagsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getLogSoapIn">
+    <wsdl:part name="parameters" element="tns:getLog" />
+  </wsdl:message>
+  <wsdl:message name="getLogSoapOut">
+    <wsdl:part name="parameters" element="tns:getLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="clearLogSoapIn">
+    <wsdl:part name="parameters" element="tns:clearLog" />
+  </wsdl:message>
+  <wsdl:message name="clearLogSoapOut">
+    <wsdl:part name="parameters" element="tns:clearLogResponse" />
+  </wsdl:message>
+  <wsdl:portType name="dataserverSoap">
+    <wsdl:operation name="login">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Login to the server and return a copy of the server names visible.</wsdl:documentation>
+      <wsdl:input message="tns:loginSoapIn" />
+      <wsdl:output message="tns:loginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="query">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves data from the SQL servers. Returns null if not login.</wsdl:documentation>
+      <wsdl:input message="tns:querySoapIn" />
+      <wsdl:output message="tns:querySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_tags">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a dataset of the tags for a certain server.</wsdl:documentation>
+      <wsdl:input message="tns:get_tagsSoapIn" />
+      <wsdl:output message="tns:get_tagsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the log.</wsdl:documentation>
+      <wsdl:input message="tns:getLogSoapIn" />
+      <wsdl:output message="tns:getLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="clearLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resets the log.</wsdl:documentation>
+      <wsdl:input message="tns:clearLogSoapIn" />
+      <wsdl:output message="tns:clearLogSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="dataserverSoap" type="tns:dataserverSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="login">
+      <soap:operation soapAction="http://tcwb01/dataserver/login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="query">
+      <soap:operation soapAction="http://tcwb01/dataserver/query" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_tags">
+      <soap:operation soapAction="http://tcwb01/dataserver/get_tags" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <soap:operation soapAction="http://tcwb01/dataserver/getLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="clearLog">
+      <soap:operation soapAction="http://tcwb01/dataserver/clearLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="dataserverSoap12" type="tns:dataserverSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="login">
+      <soap12:operation soapAction="http://tcwb01/dataserver/login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="query">
+      <soap12:operation soapAction="http://tcwb01/dataserver/query" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_tags">
+      <soap12:operation soapAction="http://tcwb01/dataserver/get_tags" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <soap12:operation soapAction="http://tcwb01/dataserver/getLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="clearLog">
+      <soap12:operation soapAction="http://tcwb01/dataserver/clearLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="dataserver">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Performs various data retrieval operations.</wsdl:documentation>
+    <wsdl:port name="dataserverSoap" binding="tns:dataserverSoap">
+      <soap:address location="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx" />
+    </wsdl:port>
+    <wsdl:port name="dataserverSoap12" binding="tns:dataserverSoap12">
+      <soap12:address location="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

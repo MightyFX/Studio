@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx?wsdl" docRef="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx" xmlns:q1="http://tcwb01/dataserver/" binding="q1:dataserverSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://pgcs04.carmeusena.com/dataserver/dataserver.asmx" xmlns:q2="http://tcwb01/dataserver/" binding="q2:dataserverSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>
